@@ -4,9 +4,9 @@ import "./App.css";
 function App() {
   useEffect(() => {
     fetch("http://localhost:3000/posts/", {
-      // method: "POST",
+      method: "GET",
       // body: JSON.stringify({
-      //   id: 1,
+      //   id: 6,
       //   title: "First",
       // }),
       // headers: {
