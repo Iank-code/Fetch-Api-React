@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import "./App.css";
 
 function App() {
+  const [item, setItem] = useState();
+
   useEffect(() => {
-    fetch("http://localhost:3000/posts/", {
+    fetch("http://localhost:3000/posts", {
       method: "GET",
-      // body: JSON.stringify({
-      //   id: 6,
-      //   title: "First",
-      // }),
       // headers: {
       //   "Content-type": "application/json; charset=UTF-8",
       // },
@@ -17,12 +16,29 @@ function App() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        setItem(data);
       });
   }, []);
+
+  // console.log({
+  //   message: "This is your data",
+  //   data: item,
+  // });
+  // if(user == "John"){
+  //   return this
+  // }
   return (
     <div>
       <h1>Hello world</h1>
+      {item &&
+        item.map((post, index) => {
+          return (
+            <div key={index}>
+              <NavLink to={`/post/${post.id}`}>Title: {post.title}</NavLink>
+              <button>Delete</button>
+            </div>
+          );
+        })}
     </div>
   );
 }
