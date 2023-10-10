@@ -27,6 +27,12 @@ function App() {
   // if(user == "John"){
   //   return this
   // }
+
+  const deletePost = (id) => {
+    fetch(`http://localhost:3000/posts/${id}`, {
+      method: "DELETE",
+    }).then((res) => res.json());
+  };
   return (
     <div>
       <h1>Hello world</h1>
@@ -35,7 +41,7 @@ function App() {
           return (
             <div key={index}>
               <NavLink to={`/post/${post.id}`}>Title: {post.title}</NavLink>
-              <button>Delete</button>
+              <button onClick={() => deletePost(post.id)}>Delete</button>
             </div>
           );
         })}
