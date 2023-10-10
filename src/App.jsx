@@ -4,6 +4,7 @@ import "./App.css";
 
 function App() {
   const [item, setItem] = useState();
+  const [newPost, setNewPost] = useState();
 
   useEffect(() => {
     fetch("http://localhost:3000/posts", {
@@ -18,7 +19,7 @@ function App() {
       .then((data) => {
         setItem(data);
       });
-  }, []);
+  }, [item]);
 
   // console.log({
   //   message: "This is your data",
@@ -35,16 +36,49 @@ function App() {
   };
   return (
     <div>
-      <h1>Hello world</h1>
-      {item &&
-        item.map((post, index) => {
-          return (
-            <div key={index}>
-              <NavLink to={`/post/${post.id}`}>Title: {post.title}</NavLink>
-              <button onClick={() => deletePost(post.id)}>Delete</button>
-            </div>
-          );
-        })}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          fetch("http://localhost:3000/posts", {
+            method: "POST",
+            body: JSON.stringify({
+              title: newPost,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+            });
+        }}
+      >
+        <label>
+          New Post:{" "}
+          <input
+            type="text"
+            placeholder="Add Post"
+            value={newPost}
+            onChange={(e) => setNewPost(e.target.value)}
+          />
+        </label>
+
+        <input type="submit" value="Add Post" />
+      </form>
+
+      <div>
+        <h1>Hello world</h1>
+        {item &&
+          item.map((post, index) => {
+            return (
+              <div key={index}>
+                <NavLink to={`/post/${post.id}`}>Title: {post.title}</NavLink>
+                <button onClick={() => deletePost(post.id)}>Delete</button>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }
